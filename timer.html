@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from flipclock.app/timer by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 09 Jul 2025 09:14:39 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>FlipClock Timer - Minimal Timer for Focus & Productivity</title>
+    <meta name="title" content="FlipClock Timer - Minimal Timer for Focus & Productivity">
+    <meta name="description"
+        content="Boost your productivity with the sleek, minimal FlipClock timer. Stay focused with customizable countdowns, time tracking, and elegant flip animations. Perfect for work, study, and daily routines.">
+
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="timer.html">
+    <meta property="og:title" content="Minimal Timer for Focus & Productivity - FlipClock">
+    <meta property="og:description"
+        content="Boost your productivity with the sleek, minimal FlipClock timer. Stay focused with customizable countdowns, time tracking, and elegant flip animations. Perfect for work, study, and daily routines.">
+    <meta property="og:image" content="images/cover_image_website.png" />
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="timer.html">
+    <meta property="twitter:title" content="Minimal Timer for Focus & Productivity - FlipClock">
+    <meta property="twitter:description"
+        content="Boost your productivity with the sleek, minimal FlipClock timer. Stay focused with customizable countdowns, time tracking, and elegant flip animations. Perfect for work, study, and daily routines.">
+    <meta property="og:image" content="images/cover_image_website.png" />
+
+
+    <meta name="keywords"
+        content="timer clock, flipclock timer, flipclock countdown, countdown clock, productivity timer, focus timer, study timer, study clock, time tracker, aesthetic countdown timer">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="timer.html">
+
+
+    <link rel="icon" href="images/new_logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/new_logo.png">
+
+
+    <link rel="stylesheet" href="flip_animation.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .top,
+        .bottom,
+        .flip-card .top-flip,
+        .flip-card .bottom-flip {
+            height: .45em;
+            padding: .25em 0 .15em 0;
+        }
+
+        .flip_container {
+            padding: 9.6% 0;
+        }   
+        .hide {
+            display: none !important;
+        }
+
+        #controls {
+            position: absolute;
+            width: clamp(300px, 50vw, 300px);
+            transform: scale(1) translateX(-50%) translateY(0);
+            transform-origin: bottom left;
+            left: 50%;
+            bottom: 65px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+
+            transition: all 0.3s cubic-bezier(0.645, 0.05, 0.45, .99);
+            transition-behavior: allow-discrete;
+            opacity: 1;
+
+            @starting-style {
+                display: none;
+                opacity: 0;
+                transform-origin: bottom left;
+                transform: scale(.93) translateX(-50%) translateY(20px);
+            }
+
+            /*
+            background-color: var(--lofi_container_border);
+            padding: 20px;
+            border-radius: 2rem;
+            backdrop-filter: blur(50px);
+            box-shadow: 0px 0px 50px 10px rgba(0, 0, 0, 0.259); */
+        }
+
+        #controls.close {
+            display: none !important;
+            opacity: 0;
+            transform-origin: bottom left;
+            transform: scale(.93) translateX(-50%) translateY(20px);
+            transition-behavior: allow-discrete;
+        }
+
+        button {
+            display: flex;
+            justify-content: center;
+            height: 35px;
+            align-items: center;
+            margin: 10px 10px;
+            background: none !important;
+            padding: 8px 10px;
+            backdrop-filter: blur(25px);
+
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        svg {
+            fill: none !important;
+            color: var(--text) !important;
+            cursor: pointer;
+        }
+
+        svg:hover {
+            color: var(--text) !important;
+            filter: contrast(0%) !important;
+            transform: scale(1.1);
+        }
+
+        button:hover svg {
+            color: var(--text) !important;
+            filter: contrast(0%) !important;
+            transform: scale(1.1);
+        }
+
+
+        .menu {
+            position: absolute;
+            transform: translateX(-50%);
+            left: 50%;
+            bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .menu>#menu_toggle {
+            fill: var(--holder) !important;
+        }
+
+        .menu>#menu_toggle:hover {
+            fill: var(--text) !important;
+            filter: contrast(100%);
+            transform: scale(1.1);
+        }
+
+        .setting-icons-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .setting-icons-container svg {
+            ;
+            color: var(--holder) !important;
+            filter: contrast(30%);
+            cursor: pointer;
+        }
+
+        #pause-btn {
+            display: none;
+        }
+
+
+
+        #timer-preview {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+
+
+
+        input[type=range] {
+            -webkit-appearance: none;
+            height: 7px;
+            width: 100%;
+            background: var(--slider_background);
+            border-radius: 5px;
+            outline: none;
+            -webkit-transition: opacity .2s;
+            transition: all .2s ease-in-out;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--text);
+            border-radius: 25%;
+            cursor: pointer !important;
+        }
+
+        #size_range_slider {
+            position: relative;
+        }
+
+        #size_range_slider::before {
+            position: absolute;
+            background-color: red;
+            width: 100%;
+            height: 50px;
+        }
+
+
+        .slider-container {
+            position: relative;
+        }
+
+        .slider-marks {
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .slider-marks span {
+            position: absolute;
+            top: -15px;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: var(--slider_background);
+            cursor: pointer;
+            transition: color 0.3s, font-weight 0.3s;
+        }
+
+        .slider-marks span.active {
+            color: var(--text);
+            font-weight: bold;
+        }
+
+        .slider-marks span[data-value="01"] {
+            left: 0%;
+        }
+
+        .slider-marks span[data-value="15"] {
+            left: 25%;
+        }
+
+        .slider-marks span[data-value="30"] {
+            left: 50%;
+        }
+
+        .slider-marks span[data-value="45"] {
+            left: 75%;
+        }
+
+        .slider-marks span[data-value="60"] {
+            left: 100%;
+        }
+
+
+        .themes_container {
+            position: initial;
+            margin: 0 auto -20px auto;
+            transform: scale(1) translateY(0);
+            width: 80%;
+            grid-template-columns: repeat(3, 1fr);
+            background-color: var(--background);
+
+            backdrop-filter: blur(70px);
+            transition: all 0.3s cubic-bezier(0.645, 0.05, 0.45, .99);
+            transition-behavior: allow-discrete;
+            opacity: 1;
+            display: grid;
+            z-index: 5 !important;
+
+            @starting-style {
+                display: none;
+                opacity: 0;
+                transform: scale(.93) translateY(20px);
+                transition-behavior: allow-discrete;
+            }
+        }
+
+        .themes_container.close {
+            display: none !important;
+            opacity: 0;
+            transform: scale(.93) translateY(20px);
+            transition-behavior: allow-discrete;
+        }
+
+        .themes_container svg:hover {
+            color: none !important;
+            fill: none !important;
+            cursor: pointer;
+            transform: rotate(180deg);
+        }
+
+
+        .news_container {
+            z-index: 10;
+            border-radius: 10px;
+            padding: 15px;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            gap: 10px;
+            background-color: var(--holder);
+            color: var(--text);
+            font-family: sans-serif;
+            font-size: 12px;
+            box-shadow: 0px 0px 50px 10px rgba(0, 0, 0, 0.259);
+
+
+            transform: scale(1) translateX(0);
+            opacity: 1;
+            transition: all 0.3s cubic-bezier(0.645, 0.05, 0.45, .99);
+            transition-behavior: allow-discrete;
+
+            @starting-style {
+                display: block;
+                opacity: 0;
+                transform: scale(.93) translateX(20px);
+            }
+        }
+
+        .news_container .news_list li {
+            font-weight: bold;
+        }
+
+        .news_container.close {
+            display: none !important;
+            opacity: 0;
+            transform: scale(.93) translateX(20px);
+            transition-behavior: allow-discrete;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="news_container hide">
+        <svg style="position: absolute; top: 0; right: 0; margin: 5px;" id="news_container_close"
+            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-x-icon lucide-x">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+        </svg>
+
+        <h2 style="margin: 0">FlipClock Timer</h2>
+
+        <div class="news_list">
+            <ul style="margin: 5px 0 0 0">
+                <li>Handcrafted flip animation sound</li>
+                <!-- <video id="feature_video" style="height: 150px; margin: 0" controls autoplay loop muted>
+                    <source src="flipclock.app_timer_sound.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video> -->
+            </ul>
+            <ul>
+                <li>Added Themes & Lo-Fi Player</li>
+            </ul>
+            <ul>
+                <li>New menu design <span style="opacity: .7; font-weight: normal;">(soon will be applied
+                        everywhere)</span></li>
+            </ul>
+        </div>
+
+        <div>
+            <p style="margin: 0; font-weight: bold;">Do you love the new timer feature?</p>
+            <div class="poll">
+                <button id="yes_button">❤️</button>
+                <!-- <button id="no_button">Ok 🙂</button> -->
+            </div>
+        </div>
+
+        <div>
+            <a style="color: #398bff; text-decoration: underline;" href="https://tally.so/r/3laYKp"
+                target="_blank">Share your feature recommendations</a>
+        </div>
+    </div>
+
+
+    <div style="z-index: 1 !important;" class="container">
+        <div class="holder">
+            <div class="flip_container">
+                <div class="container-segment">
+                    <div class="segment">
+                        <div class="flip-card" id="data-hour-tens">
+                            <div class="top">25</div>
+                            <div class="bottom">25</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="holder">
+            <div class="flip_container">
+                <div class="container-segment">
+                    <div class="segment">
+                        <div class="flip-card" id="data-minute-tens">
+                            <div class="top">00</div>
+                            <div class="bottom">00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="z-index: 3 !important;" id="controls">
+        <div style="width: 100%; display: flex; gap: 20px; flex-direction: column;">
+            <!-- THEMES CONTAINER -->
+            <div class="themes_container">
+                <svg class="default_theme" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#b7b7b7" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+                <svg class="theme1" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#D6F5D6" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+                <svg class="theme2" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#CED4FF" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+                <svg class="theme3" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#FFA7A7" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+                <svg class="theme4" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#FFC57C" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+                <svg class="theme5" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#CCE1FF" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+                <svg class="theme6" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#FFDB57" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+                <svg class="theme7" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#F8E8FF" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+                <svg class="theme8" width="45" height="45" viewBox="0 0 45 45" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.9773 44.9545C25.8677 44.9545 28.7298 44.3852 31.4002 43.2791C34.0706 42.173 36.497 40.5517 38.5408 38.5079C40.5846 36.4641 42.2059 34.0377 43.312 31.3673C44.4181 28.6969 44.9874 25.8348 44.9874 22.9444C44.9874 20.054 44.4181 17.1919 43.312 14.5215C42.2059 11.8511 40.5846 9.42476 38.5408 7.38093C36.497 5.33711 34.0706 3.71585 31.4002 2.60974C28.7298 1.50363 25.8677 0.934325 22.9773 0.934325L22.9773 22.9444L22.9773 44.9545Z"
+                        fill="#D0FFE9" />
+                    <path
+                        d="M22.9775 0.934155C20.0871 0.934155 17.225 1.50346 14.5546 2.60957C11.8842 3.71568 9.45784 5.33694 7.41402 7.38076C5.37019 9.42459 3.74894 11.851 2.64283 14.5214C1.53672 17.1917 0.967408 20.0538 0.967408 22.9443C0.967408 25.8347 1.53672 28.6968 2.64283 31.3672C3.74894 34.0375 5.37019 36.4639 7.41402 38.5077C9.45784 40.5516 11.8842 42.1728 14.5546 43.2789C17.225 44.385 20.0871 44.9543 22.9775 44.9543L22.9775 22.9443L22.9775 0.934155Z"
+                        fill="var(--theme-secondary)" />
+                </svg>
+            </div>
+
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <button id="start-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-play-icon lucide-play">
+                        <polygon points="6 3 20 12 6 21 6 3" />
+                    </svg>
+                </button>
+                <button id="pause-btn" style="transform: scale(1.15);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                    </svg>
+                </button>
+                <button id="stop-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-rotate-ccw-icon lucide-rotate-ccw">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                        <path d="M3 3v5h5" />
+                    </svg>
+                </button>
+            </div>
+
+
+            <div class="slider-container">
+                <div class="slider-marks">
+                    <span data-value="1">01</span>
+                    <span data-value="15">15</span>
+                    <span data-value="30">30</span>
+                    <span data-value="45">45</span>
+                    <span data-value="60">60</span>
+                </div>
+                <input id="time-slider" type="range" min="1" max="60" value="15" />
+            </div>
+
+            <input type="range" id="size_range_slider" min="25" max="120" step="10" title="Size" value="65"
+                oninput="clock_size()">
+        </div>
+
+
+        <div class="setting-icons-container">
+            <!-- VOLUME ON -->
+            <svg id="volume_on" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+            </svg>
+
+            <!-- VOLUME OFF -->
+            <svg style="display: none;" id="volume_off" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="lucide lucide-volume-off-icon lucide-volume-off">
+                <path d="M16 9a5 5 0 0 1 .95 2.293" />
+                <path d="M19.364 5.636a9 9 0 0 1 1.889 9.96" />
+                <path d="m2 2 20 20" />
+                <path
+                    d="m7 7-.587.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298V11" />
+                <path d="M9.828 4.172A.686.686 0 0 1 11 4.657v.686" />
+            </svg>
+
+
+
+            <!-- THEMES -->
+            <svg title="Themes" class="themes_toggle"
+                style='cursor: pointer; fill: none; stroke: var(--holder); width: 25px; height: 25px'
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z" />
+            </svg>
+
+            <svg style="display: none; transform: scale(1.1);" id="themes_close_toggle"
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-x-icon lucide-x">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+            </svg>
+
+
+            <!-- LOFI MUSIC -->
+            <svg style="cursor: pointer; fill: var(--holder) !important;" title="Lo-Fi Music" id='lofi_button'
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+                <path
+                    d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z" />
+                <path fill-rule="evenodd" d="M14 11V2h1v9h-1zM6 3v10H5V3h1z" />
+                <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4V2.905z" />
+            </svg>
+
+
+            <!-- FULLSCREEN -->
+            <svg style="cursor: pointer; fill: var(--holder) !important;" class='full' title="Full Screen"
+                onclick='DoFullscreen()' xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                class="bi bi-fullscreen" viewBox="0 0 18 16">
+                <path
+                    d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="menu">
+        <!-- LIGHT / DARK MODE -->
+        <label style="transform: scale(.85) !important;" class="theme-switch" for="checkbox">
+            <input type="checkbox" class="plus-minus" id="checkbox" checked>
+        </label>
+
+        <!-- MENU -->
+        <svg id="menu_toggle" onclick="ToggleThing()" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+            fill="none" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+        </svg>
+
+        <svg style="display: none;" id="menu_close" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" class="lucide lucide-x-icon lucide-x">
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+        </svg>
+    </div>
+
+
+    <div id="lofi_container" style="bottom: 20px; right: 20px !important" class="hide">
+        <div style="display: flex; flex-direction: row-reverse; gap: 10px">
+            <svg style="fill: var(--holder) !important" id="lofi_close_button" xmlns="http://www.w3.org/2000/svg"
+                x="0px" y="0px" width="16" height="16" viewBox="0 0 24 24">
+                <path
+                    d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z">
+                </path>
+            </svg>
+            <iframe id="lofi_player" frameborder="0" width="340px" height="220px"></iframe>
+        </div>
+
+        <div
+            style="display: flex; flex-direction: row; gap: 5px; justify-content: space-between; padding: 0 50px 0 5px">
+            <a style="margin: 0 0 5px 20px; width: fit-content;" href="https://tally.so/r/mOQkXp" target="_blank">Share
+                your Lo-Fi playlists →</a>
+
+            <p
+                style=" margin: 0 0 5px 20px; width: fit-content; font-family: Arial, Helvetica, sans-serif; color: var(--text); opacity: .3;">
+                by Farieda</p>
+        </div>
+    </div>
+
+    <div style="z-index: 2 !important;" class="line"></div>
+
+    <!-- TINY ADZ -->
+    <script src="../app.tinyadz.com/scripts/v1.0/ads922e.js?siteId=67fe90fbcb4c82370fb16b91" type="module" async></script>
+
+
+    <script>
+        let timerDuration = 15 * 60;
+        let timerRemaining = timerDuration;
+        let timerInterval = null;
+        let timerRunning = false;
+        let muteFlipAudio = false;
+        const volume = 1.0;
+
+
+        const hourCard = document.getElementById("data-hour-tens");
+        const minuteCard = document.getElementById("data-minute-tens");
+        const slider = document.getElementById("time-slider");
+        const clock_container = document.querySelector('.container');
+        const menuToggle = document.getElementById("menu_toggle");
+        const menuClose = document.getElementById("menu_close");
+
+        const startBtn = document.getElementById("start-btn");
+        const pauseBtn = document.getElementById("pause-btn");
+
+        const volume_on = document.getElementById('volume_on');
+        const volume_off = document.getElementById('volume_off');
+
+        // FLIP SOUND
+        const flip1 = new Audio('Sounds/flip1.wav');
+        const flip2 = new Audio('Sounds/flip2.wav');
+        const flip3 = new Audio('Sounds/flip3.wav');
+        const flip4 = new Audio('Sounds/flip4.wav');
+        const flip5 = new Audio('Sounds/flip5.wav');
+
+        function playTick() {
+            let chooseRandomTick = Math.floor(Math.random() * 2) + 1;
+            let chooseRandomTick6 = Math.floor(Math.random() * 6) + 1;
+            flip1.volume = volume; flip2.volume = volume;
+            flip3.volume = volume; flip4.volume = volume; flip5.volume = volume;
+
+            switch (chooseRandomTick6) {
+                case 1:
+                    flip1.currentTime = 0;
+                    flip1.play();
+                    break;
+                case 2:
+                    flip2.currentTime = 0;
+                    flip2.play();
+                    break;
+                case 3:
+                    flip3.currentTime = 0;
+                    flip3.play();
+                    break;
+                case 4:
+                    flip4.currentTime = 0;
+                    flip4.play();
+                    break;
+                case 5:
+                    flip5.currentTime = 0;
+                    flip5.play();
+                    break;
+                default:
+                    flip1.currentTime = 0;
+                    flip1.play();
+                    break;
+            }
+        }
+
+        volume_on.onclick = function () {
+            volume_on.style.display = "none";
+            volume_off.style.display = "block";
+
+            muteFlipAudio = true;
+        }
+        volume_off.onclick = function () {
+            volume_on.style.display = "block";
+            volume_off.style.display = "none";
+
+            muteFlipAudio = false;
+        }
+
+
+        // MAKE CONTROLS VISIBLE ON LOAD
+        menuToggle.style.display = "none";
+        menuClose.style.display = "block";
+        controls.style.display = 'flex'
+
+        menuToggle.onclick = function () {
+            menuToggle.style.display = "none";
+            menuClose.style.display = "block";
+
+            const controls = document.getElementById("controls");
+            controls.classList.remove('close')
+            controls.style.display = 'flex'
+        }
+        menuClose.onclick = function () {
+            menuToggle.style.display = "block";
+            menuClose.style.display = "none";
+
+            const controls = document.getElementById("controls");
+            controls.classList.add('close')
+        }
+
+        // NEWS CONTAINER
+        document.getElementById('news_container_close').onclick = function () {
+            const news_container = document.querySelector(".news_container");
+            news_container.classList.add('close')
+
+            document.getElementById('feature_video').src = "";
+        }
+
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return [m, s < 10 ? '0' + s : s];
+        }
+
+        function flip(flipCard, newNumber) {
+            const topHalf = flipCard.querySelector(".top");
+            const startNumber = topHalf.textContent;
+            if (newNumber === startNumber) return;
+
+            const bottomHalf = flipCard.querySelector(".bottom");
+            const topFlip = document.createElement("div");
+            topFlip.classList.add("top-flip");
+            const bottomFlip = document.createElement("div");
+            bottomFlip.classList.add("bottom-flip");
+
+            topHalf.textContent = startNumber;
+            bottomHalf.textContent = startNumber;
+            topFlip.textContent = startNumber;
+            bottomFlip.textContent = newNumber;
+
+            topFlip.addEventListener("animationstart", () => {
+                topHalf.textContent = newNumber;
+            });
+            topFlip.addEventListener("animationend", () => {
+                topFlip.remove();
+            });
+            bottomFlip.addEventListener("animationend", () => {
+                bottomHalf.textContent = newNumber;
+                bottomFlip.remove();
+            });
+
+            flipCard.append(topFlip, bottomFlip);
+        }
+
+        function updateClockDisplay(min, sec) {
+            const paddedMin = String(min).padStart(2, '0');
+            const paddedSec = String(sec).padStart(2, '0');
+
+            flip(hourCard, paddedMin);
+            flip(minuteCard, paddedSec);
+
+            if (!muteFlipAudio) {
+                playTick();
+            }
+        }
+
+        let debounceTimeout;
+        slider.addEventListener("input", (e) => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                const mins = parseInt(e.target.value);
+                timerDuration = mins * 60;
+                timerRemaining = timerDuration;
+                const [m, s] = formatTime(timerRemaining);
+                updateClockDisplay(m, s);
+            }, 20); // Adjust delay as needed (200ms is a good start)
+        });
+
+        document.getElementById('start-btn').addEventListener('click', () => {
+            startBtn.style.display = "none";
+            pauseBtn.style.display = "block";
+
+            if (timerRunning) return;
+            timerRunning = true;
+
+            timerInterval = setInterval(() => {
+                if (timerRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerRunning = false;
+                    return;
+                }
+                timerRemaining--;
+                const [m, s] = formatTime(timerRemaining);
+                updateClockDisplay(m, s);
+            }, 1000);
+        });
+
+        document.getElementById('pause-btn').addEventListener('click', () => {
+            startBtn.style.display = "block";
+            pauseBtn.style.display = "none";
+
+            clearInterval(timerInterval);
+            timerRunning = false;
+        });
+
+        document.getElementById('stop-btn').addEventListener('click', () => {
+            startBtn.style.display = "block";
+            pauseBtn.style.display = "none";
+
+            clearInterval(timerInterval);
+            timerRunning = false;
+            timerRemaining = timerDuration;
+            const [m, s] = formatTime(timerRemaining);
+            updateClockDisplay(m, s);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            let clockScale = localStorage.getItem('clock_scale')
+
+            if (clockScale) {
+                document.getElementById('size_range_slider').value = clockScale
+                clock_container.style.transform = "scale(" + clockScale / 100 + ")";
+            }
+        })
+
+        function clock_size() {
+            var size_range_slider = document.getElementById('size_range_slider').value
+
+            clock_container.style.transform = "scale(" + size_range_slider / 100 + ")";
+            localStorage.setItem('clock_scale', size_range_slider)
+        }
+
+
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem("data-theme", 'dark')
+            }
+            else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem("data-theme", 'light')
+            }
+
+
+            // THEME 1
+            if (document.documentElement.getAttribute('data-theme') == 'dark' && localStorage.getItem("current_theme") == "theme1") {
+                document.body.style.setProperty('--background', '#0F140F');
+                document.body.style.setProperty('--holder', '#1A1F1A');
+                document.body.style.setProperty('--text', '#C4EBC1');
+            }
+            if (document.documentElement.getAttribute('data-theme') == 'light' && localStorage.getItem('current_theme') == 'theme1') {
+                document.body.style.setProperty('--background', '#E8FFE8');
+                document.body.style.setProperty('--holder', '#D6F5D6');
+                document.body.style.setProperty('--text', '#546654');
+            }
+
+            // THEME 2
+            if (document.documentElement.getAttribute('data-theme') == 'dark' && localStorage.getItem("current_theme") == "theme2") {
+                document.body.style.setProperty('--background', '#131315');
+                document.body.style.setProperty('--holder', '#1B1C20');
+                document.body.style.setProperty('--text', '#C5C8F8');
+            }
+            if (document.documentElement.getAttribute('data-theme') == 'light' && localStorage.getItem('current_theme') == 'theme2') {
+                document.body.style.setProperty('--background', '#EFF2FF');
+                document.body.style.setProperty('--holder', '#E4E7FE');
+                document.body.style.setProperty('--text', '#222843');
+            }
+
+            // THEME 3
+            if (document.documentElement.getAttribute('data-theme') == 'dark' && localStorage.getItem("current_theme") == "theme3") {
+                document.body.style.setProperty('--background', '#1B1616');
+                document.body.style.setProperty('--holder', '#271E1E');
+                document.body.style.setProperty('--text', '#EF6666');
+            }
+            if (document.documentElement.getAttribute('data-theme') == 'light' && localStorage.getItem('current_theme') == 'theme3') {
+                document.body.style.setProperty('--background', '#FFF4F4');
+                document.body.style.setProperty('--holder', '#FFEDED');
+                document.body.style.setProperty('--text', '#FF8F8F');
+            }
+
+            // THEME 4
+            if (document.documentElement.getAttribute('data-theme') == 'dark' && localStorage.getItem("current_theme") == "theme4") {
+                document.body.style.setProperty('--background', '#16120B');
+                document.body.style.setProperty('--holder', '#221E17');
+                document.body.style.setProperty('--text', '#FFAC45');
+            }
+            if (document.documentElement.getAttribute('data-theme') == 'light' && localStorage.getItem('current_theme') == 'theme4') {
+                document.body.style.setProperty('--background', '#FFF7EC');
+                document.body.style.setProperty('--holder', '#FFEED6');
+                document.body.style.setProperty('--text', '#FDC97B');
+            }
+
+            // THEME 5
+            if (document.documentElement.getAttribute('data-theme') == 'dark' && localStorage.getItem("current_theme") == "theme5") {
+                document.body.style.setProperty('--background', '#131519');
+                document.body.style.setProperty('--holder', '#1A1E23');
+                document.body.style.setProperty('--text', '#CCE1FF');
+            }
+            if (document.documentElement.getAttribute('data-theme') == 'light' && localStorage.getItem('current_theme') == 'theme5') {
+                document.body.style.setProperty('--background', '#F5F9FF');
+                document.body.style.setProperty('--holder', '#E4EFFF');
+                document.body.style.setProperty('--text', '#2C3440');
+            }
+
+            // THEME 6
+            if (document.documentElement.getAttribute('data-theme') == 'dark' && localStorage.getItem("current_theme") == "theme6") {
+                document.body.style.setProperty('--background', '#0D0F11');
+                document.body.style.setProperty('--holder', '#14161A');
+                document.body.style.setProperty('--text', '#FFD458');
+            }
+            if (document.documentElement.getAttribute('data-theme') == 'light' && localStorage.getItem('current_theme') == 'theme6') {
+                document.body.style.setProperty('--background', '#FFFDF4');
+                document.body.style.setProperty('--holder', '#FFF8E1');
+                document.body.style.setProperty('--text', '#FFDB57');
+            }
+
+            // THEME 7
+            if (document.documentElement.getAttribute('data-theme') == 'dark' && localStorage.getItem("current_theme") == "theme7") {
+                document.body.style.setProperty('--background', '#1A171C');
+                document.body.style.setProperty('--holder', '#221D23');
+                document.body.style.setProperty('--text', '#E3CEEC');
+            }
+            if (document.documentElement.getAttribute('data-theme') == 'light' && localStorage.getItem('current_theme') == 'theme7') {
+                document.body.style.setProperty('--background', '#FCF5FF');
+                document.body.style.setProperty('--holder', '#F8E8FF');
+                document.body.style.setProperty('--text', '#574260');
+            }
+
+            // THEME 8
+            if (document.documentElement.getAttribute('data-theme') == 'dark' && localStorage.getItem("current_theme") == "theme8") {
+                document.body.style.setProperty('--background', '#181B19');
+                document.body.style.setProperty('--holder', '#1E2320');
+                document.body.style.setProperty('--text', '#BEEBD2');
+            }
+            if (document.documentElement.getAttribute('data-theme') == 'light' && localStorage.getItem('current_theme') == 'theme8') {
+                document.body.style.setProperty('--background', '#F5FFFA');
+                document.body.style.setProperty('--holder', '#E6F8EE');
+                document.body.style.setProperty('--text', '#5F8873');
+            }
+        }
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        // FULL SCREEN
+        const fullSc = document.querySelector('.full');
+        fullSc.onclick = function DoFullscreen(event) {
+            document.documentElement.requestFullscreen();
+
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen()
+            }
+        }
+
+
+        const marks = document.querySelectorAll('.slider-marks span');
+
+        function updateActiveMark() {
+            const sliderValue = parseInt(slider.value, 10);
+
+            marks.forEach(mark => {
+                const markValue = parseInt(mark.dataset.value, 10);
+                mark.classList.toggle('active', markValue === sliderValue);
+            });
+        }
+
+        slider.addEventListener('input', updateActiveMark);
+
+        // Click on marks to set slider value
+        marks.forEach(mark => {
+            mark.addEventListener('click', () => {
+                slider.value = mark.dataset.value;
+
+                const mins = parseInt(mark.dataset.value);
+                timerDuration = mins * 60;
+                timerRemaining = timerDuration;
+                const [m, s] = formatTime(timerRemaining);
+                updateClockDisplay(m, s);
+
+                updateActiveMark();
+            });
+        });
+
+        // Initialize
+        updateActiveMark();
+
+
+
+        // Initialize clock on load
+        const [initM, initS] = formatTime(timerRemaining);
+        updateClockDisplay(initM, initS);
+
+
+
+        // LOFI
+        const lofi_video_link = "QZTDZFtbrec";
+
+        const lofi_button = document.getElementById('lofi_button');
+        const lofi_player = document.getElementById('lofi_player');
+        const lofi_container = document.getElementById('lofi_container');
+        const lofi_close_button = document.getElementById('lofi_close_button');
+
+        lofi_close_button.onclick = function () {
+            document.querySelector("#lofi_container").classList.add("hide");
+            document.querySelector("#lofi_player").src = "";
+        };
+        lofi_button.onclick = function ToggleThing(event) {
+            document.querySelector("#lofi_player").src = `https://www.youtube.com/embed/${lofi_video_link}`;
+            lofi_container.classList.remove("hide");
+        }
+
+        function dragElement(elmnt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmnt.id + "header")) {
+                /* if present, the header is where you move the DIV from:*/
+                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+            } else {
+                /* otherwise, move the DIV from anywhere inside the DIV:*/
+                elmnt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                /* stop moving when mouse button is released:*/
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+        // DRAGGABLE LOFI PLAYER
+        dragElement(lofi_container);
+
+
+        // THEMES 
+        const themesContainer = document.getElementsByClassName('themes_container')[0];
+        const themes_toggle = document.getElementsByClassName('themes_toggle')[0];
+        const themes_close_toggle = document.getElementById('themes_close_toggle');
+
+
+        themes_toggle.addEventListener('click', () => {
+            themesContainer.classList.remove('close')
+            themesContainer.style.display = "grid";
+
+            themes_toggle.style.display = "none";
+            themes_close_toggle.style.display = "block";
+        });
+        themes_close_toggle.addEventListener('click', () => {
+            themesContainer.classList.add('close')
+
+            themes_toggle.style.display = "block";
+            themes_close_toggle.style.display = "none";
+        });
+
+
+        // Default theme
+        document.querySelector(".default_theme").addEventListener("click", function () {
+            localStorage.removeItem("current_theme");
+            document.body.style.removeProperty('--background');
+            document.body.style.removeProperty('--holder');
+            document.body.style.removeProperty('--text');
+        });
+
+
+        // THEME 1
+        document.querySelector(".theme1").addEventListener("click", function () {
+            localStorage.setItem("current_theme", "theme1");
+            document.body.style.setProperty('--background', '#0F140F');
+            document.body.style.setProperty('--holder', '#1A1F1A');
+            document.body.style.setProperty('--text', '#C4EBC1');
+        });
+
+        // THEME 2
+        document.querySelector(".theme2").addEventListener("click", function () {
+            localStorage.setItem("current_theme", "theme2");
+            document.body.style.setProperty('--background', '#131315');
+            document.body.style.setProperty('--holder', '#1B1C20');
+            document.body.style.setProperty('--text', '#C5C8F8');
+        });
+
+        // THEME 3
+        document.querySelector(".theme3").addEventListener("click", function () {
+            localStorage.setItem("current_theme", "theme3");
+            document.body.style.setProperty('--background', '#1B1616');
+            document.body.style.setProperty('--holder', '#271E1E');
+            document.body.style.setProperty('--text', '#EF6666');
+        });
+
+        // THEME 4
+        document.querySelector(".theme4").addEventListener("click", function () {
+            localStorage.setItem("current_theme", "theme4");
+            document.body.style.setProperty('--background', '#16120B');
+            document.body.style.setProperty('--holder', '#221E17');
+            document.body.style.setProperty('--text', '#FFAC45');
+        });
+
+        // THEME 5
+        document.querySelector(".theme5").addEventListener("click", function () {
+            localStorage.setItem("current_theme", "theme5");
+            document.body.style.setProperty('--background', '#131519');
+            document.body.style.setProperty('--holder', '#1A1E23');
+            document.body.style.setProperty('--text', '#CCE1FF');
+        });
+
+        // THEME 6
+        document.querySelector(".theme6").addEventListener("click", function () {
+            localStorage.setItem("current_theme", "theme6");
+            document.body.style.setProperty('--background', '#0D0F11');
+            document.body.style.setProperty('--holder', '#14161A');
+            document.body.style.setProperty('--text', '#FFD458');
+        });
+
+        // THEME 7
+        document.querySelector(".theme7").addEventListener("click", function () {
+            localStorage.setItem("current_theme", "theme7");
+            document.body.style.setProperty('--background', '#1A171C');
+            document.body.style.setProperty('--holder', '#221D23');
+            document.body.style.setProperty('--text', '#E3CEEC');
+        });
+
+        // THEME 8
+        document.querySelector(".theme8").addEventListener("click", function () {
+            localStorage.setItem("current_theme", "theme8");
+            document.body.style.setProperty('--background', '#181B19');
+            document.body.style.setProperty('--holder', '#1E2320');
+            document.body.style.setProperty('--text', '#BEEBD2');
+        });
+
+
+
+
+
+
+        // COUNTRAPI POLL
+        let website = "https://countrapi.vercel.app/"
+        var current_poll = "flipclock_timer_feature";
+
+        async function initializePoll() {
+            const response = await fetch(`${website}/counts`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: current_poll, initialValue: 0,
+                    poll: { upvote: 0, downvote: 0 }
+                })
+            });
+
+            // Add error handling
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log(data);
+        }
+
+
+        document.getElementById('yes_button').addEventListener('click', async function (e) {
+            const yes_response = await fetch(`${website}/counts/${current_poll}/upvote`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: current_poll, initialValue: 0,
+                    poll: { upvote: 0, downvote: 0 }
+                })
+            });
+            const yes_data = await yes_response.json();
+            document.getElementById('yes_button').innerText = `❤️  ${yes_data.poll.upvote}`;
+
+            setTimeout(function () {
+                document.getElementById('yes_button').disabled = true;
+                document.getElementById('yes_button').style.cursor = 'not-allowed';
+            }, 1000);
+        })
+    </script>
+<!-- Cloudflare Pages Analytics --><script defer src='../static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b3e96b7e5ad541c586047719801488ce"}'></script><!-- Cloudflare Pages Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"95c6b62d2cad59b4","version":"2025.6.2","r":1,"serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"b0e7779043ed42da9456d0a36cb961a6","b":1}' crossorigin="anonymous"></script>
+</body>
+
+
+<!-- Mirrored from flipclock.app/timer by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 09 Jul 2025 09:14:41 GMT -->
+</html>
