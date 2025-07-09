@@ -1,0 +1,66 @@
+.flip-card {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  border-radius: 0.1em;
+  width: 100%;
+}
+
+.top,
+.bottom,
+.top-flip,
+.bottom-flip {
+  height: 0.45em;
+  padding: 0.25em 0 0.15em 0;
+  line-height: 0.5;
+  overflow: hidden;
+  text-align: center;
+  justify-content: center;
+  font-size: clamp(30vw, 40vw, 50vw);
+  color: var(--text);
+  transition: all 0.5s;
+}
+
+.top,
+.top-flip {
+  background-color: var(--holder);
+  border-top-right-radius: 0.1em;
+  border-top-left-radius: 0.1em;
+}
+
+.bottom,
+.bottom-flip {
+  background-color: var(--holder);
+  display: flex;
+  align-items: flex-end;
+  border-bottom-right-radius: 0.1em;
+  border-bottom-left-radius: 0.1em;
+}
+
+.top-flip {
+  position: absolute;
+  width: 100%;
+  animation: flip-top 350ms ease-in;
+  transform-origin: bottom;
+}
+
+@keyframes flip-top {
+  100% {
+    transform: rotateX(90deg);
+  }
+}
+
+.bottom-flip {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  animation: flip-bottom 350ms ease-out 350ms;
+  transform-origin: top;
+  transform: rotateX(90deg);
+}
+
+@keyframes flip-bottom {
+  100% {
+    transform: rotateX(0deg);
+  }
+}

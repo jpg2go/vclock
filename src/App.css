@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+:root {
+  --background: black;
+  --line: black;
+  --text: #b7b7b7;
+  --holder: #101010;
+  --theme-container-border: rgba(146, 146, 146, 0.481);
+  --theme-secondary: white;
+  --theme-shadow: black;
+  --slider-background: #353535;
+}
+
+[data-theme="light"] {
+  --background: #f3f3f3;
+  --text: #000000;
+  --line: #e6e6e6;
+  --holder: #e6e6e6;
+  --theme-container-border: rgba(0, 0, 0, 0.305);
+  --theme-secondary: rgb(80, 77, 88);
+  --theme-shadow: rgba(0, 0, 0, 0);
+  --slider-background: #bcbcbc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--background);
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Bebas Neue", Arial, sans-serif;
+  cursor: default;
+  transition: background-color 0.3s ease;
+}
+
+.App {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hide {
+  display: none !important;
+}
+
+.hidden {
+  display: flex !important;
+}
+
+.hidden-theme {
+  display: grid !important;
+}
+
+svg {
+  fill: var(--holder);
+  filter: contrast(60%);
+  transition: all 0.2s ease;
+}
+
+svg:hover {
+  fill: var(--text);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 1200px) {
+  @media only screen and (orientation: portrait) {
+    .App {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  @media only screen and (orientation: landscape) {
+    .App {
+      transform: scale(0.9);
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  @media screen and (orientation: landscape) {
+    .App {
+      transform: scale(0.7);
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  @media screen and (orientation: landscape) {
+    .App {
+      transform: scale(0.8);
+    }
+  }
+}
